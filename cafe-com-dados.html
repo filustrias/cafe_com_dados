@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Café com Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#0a5c8a;
+    --azul-claro:#e8f2f8;
+    --cafe:#6b4a32;
+    --cafe-claro:#f5efe9;
+    --texto:#1f2a33;
+    --cinza:#5b6872;
+    --linha:#d9e1e6;
+    --fundo:#ffffff;
+    --pagina:#f4f6f8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--pagina);color:var(--texto);
+    font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.55;
+  }
+  .folha{max-width:860px;margin:32px auto;background:var(--fundo);
+    border:1px solid var(--linha);border-radius:6px;overflow:hidden}
+  header{background:var(--azul);color:#fff;padding:36px 40px 30px}
+  header .rotulo{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0 0 6px}
+  header h1{font-family:"Source Serif 4",Georgia,serif;font-size:40px;line-height:1.1;margin:0 0 10px}
+  header p.sub{margin:0;font-size:18px;max-width:620px;opacity:.95}
+  main{padding:28px 40px 36px}
+  h2{font-family:"Source Serif 4",Georgia,serif;color:var(--azul);font-size:22px;
+    margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--azul-claro)}
+  h2:first-child{margin-top:4px}
+
+  /* Informações práticas */
+  .info{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .cartao{border:1px solid var(--linha);border-radius:6px;padding:14px 16px;background:#fff}
+  .cartao .t{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--cinza);margin:0 0 4px;font-weight:600}
+  .cartao .v{font-size:18px;font-weight:700;margin:0;color:var(--texto)}
+  .cartao .d{font-size:14px;color:var(--cinza);margin:4px 0 0}
+
+  .objetivo{background:var(--azul-claro);border-left:4px solid var(--azul);padding:16px 20px;border-radius:0 6px 6px 0}
+  .objetivo p{margin:0 0 8px}
+  .objetivo p:last-child{margin:0}
+
+  /* Formato */
+  .barra{display:grid;grid-template-columns:1fr 1fr 1fr;border-radius:6px;overflow:hidden;border:1px solid var(--linha)}
+  .bloco{padding:14px 16px;border-right:1px solid var(--linha)}
+  .bloco:last-child{border-right:none}
+  .bloco .hora{font-size:13px;font-weight:700;color:var(--cinza);margin:0}
+  .bloco .nome{font-size:17px;font-weight:700;margin:2px 0 6px}
+  .bloco .desc{font-size:14px;margin:0;color:var(--texto)}
+  .bloco .expl{font-size:14px;margin:10px 0 0;padding-top:10px;border-top:1px solid rgba(0,0,0,.12);color:var(--cinza)}
+  .b1{background:var(--azul-claro)} .b1 .nome{color:var(--azul)}
+  .b2{background:#fff}             .b2 .nome{color:var(--azul)}
+  .b3{background:var(--cafe-claro)} .b3 .nome{color:var(--cafe)}
+  .escala{display:flex;justify-content:space-between;font-size:12px;color:var(--cinza);margin-top:4px;padding:0 2px}
+
+  /* Sanfonas */
+  .controles{display:flex;justify-content:flex-end;gap:8px;margin:-4px 0 10px}
+  .controles button{font:inherit;font-size:13px;background:none;border:1px solid var(--linha);
+    border-radius:4px;padding:4px 10px;color:var(--azul);cursor:pointer}
+  .controles button:hover{background:var(--azul-claro)}
+  details{border:1px solid var(--linha);border-radius:6px;margin-bottom:8px;background:#fff}
+  details[open]{border-color:#b9cad5}
+  summary{cursor:pointer;list-style:none;padding:12px 16px;display:flex;align-items:baseline;gap:12px;font-weight:600}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";margin-left:auto;color:var(--azul);font-weight:700;font-size:18px;line-height:1}
+  details[open] summary::after{content:"−"}
+  summary .num{flex:0 0 auto;font-size:12px;font-weight:700;color:#fff;background:var(--azul);
+    border-radius:3px;padding:2px 7px;letter-spacing:.03em}
+  summary .qtd{font-weight:400;font-size:13px;color:var(--cinza);white-space:nowrap}
+  .conteudo{padding:2px 20px 14px 20px;border-top:1px solid var(--linha)}
+  .conteudo ol{margin:12px 0 0;padding-left:28px}
+  .conteudo li{margin-bottom:6px}
+  .conteudo ul{margin:6px 0 0;padding-left:20px}
+  .conteudo ul li{margin-bottom:3px}
+  .ref{margin:12px 0 0}
+  .ref p{margin:0}
+  .ref .nota{color:var(--cinza);font-size:15px;margin-top:2px}
+  a{color:var(--azul);word-break:break-word}
+  .modulo{font-size:12px;font-weight:600;color:var(--cafe);background:var(--cafe-claro);
+    border-radius:3px;padding:2px 7px;white-space:nowrap}
+  .aviso{font-size:15px;color:var(--cinza);margin:10px 0 0}
+
+  footer{border-top:1px solid var(--linha);padding:16px 40px 22px;font-size:14px;color:var(--cinza)}
+
+  @media (max-width:640px){
+    .folha{margin:0;border:none;border-radius:0}
+    header{padding:26px 16px 22px}
+    header h1{font-size:32px}
+    main{padding:20px 16px 28px}
+    footer{padding:14px 16px 20px}
+    .info{grid-template-columns:1fr}
+    .barra{grid-template-columns:1fr}
+    .bloco{border-right:none;border-bottom:1px solid var(--linha)}
+    .bloco:last-child{border-bottom:none}
+    .escala{display:none}
+    summary{flex-wrap:wrap}
+    summary .modulo{order:3}
+  }
+  @media print{
+    body{background:#fff}
+    .folha{margin:0;border:none}
+    .controles{display:none}
+    header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    details{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="folha">
+
+<header>
+  <p class="rotulo">OMS Angola · Proposta de atividade</p>
+  <h1>Café com Dados</h1>
+  <p class="sub">Encontro semanal para aprimorarmos as nossas competências para produzir, ler, analisar, julgar e comunicar dados de saúde pública.</p>
+</header>
+
+<main>
+
+<h2>Informações práticas</h2>
+<div class="info">
+  <div class="cartao">
+    <p class="t">Quando</p>
+    <p class="v">Quartas-feiras</p>
+    <p class="d">Das 9h00 às 9h45</p>
+  </div>
+  <div class="cartao">
+    <p class="t">Participação</p>
+    <p class="v">Voluntária</p>
+    <p class="d">Aberta, num primeiro momento, aos profissionais da OMS</p>
+  </div>
+  <div class="cartao">
+    <p class="t">Público principal</p>
+    <p class="v">Pontos focais provinciais</p>
+    <p class="d">Em contacto diário com as direções provinciais de saúde</p>
+  </div>
+</div>
+
+<h2>Objetivo</h2>
+<div class="objetivo">
+  <p>Ampliar e aprofundar o conhecimento dos profissionais da OMS sobre como produzir, ler, analisar, julgar e comunicar dados de saúde pública.</p>
+  <p>Espera-se que este aprendizado chegue às direções provinciais de saúde através do contacto diário dos pontos focais.</p>
+</div>
+
+<h2>Formato de cada encontro</h2>
+<div class="barra">
+  <div class="bloco b1">
+    <p class="hora">9h00 – 9h15</p>
+    <p class="nome">Apresentação</p>
+    <p class="desc">Exposição breve do tema da semana.</p>
+    <p class="expl">Apenas 15 minutos para apresentar um tema ou conceito. Não haverá palestras nem aulas magnas.</p>
+  </div>
+  <div class="bloco b2">
+    <p class="hora">9h15 – 9h30</p>
+    <p class="nome">Exercício</p>
+    <p class="desc">Trabalho prático sobre o tema em pequenos grupos.</p>
+    <p class="expl">Só se aprende pondo as mãos na massa. Os exercícios serão focados num tema muito específico e feitos sempre em pequenos grupos.</p>
+  </div>
+  <div class="bloco b3">
+    <p class="hora">9h30 – 9h45</p>
+    <p class="nome">Fecho</p>
+    <p class="desc">Conclusões e informações para o encontro seguinte.</p>
+    <p class="expl">Discussão do trabalho feito nos pequenos grupos e apresentação do que será feito no encontro seguinte.</p>
+  </div>
+</div>
+<div class="escala"><span>0 min</span><span>15 min</span><span>30 min</span><span>45 min</span></div>
+
+<h2>Preparação das sessões</h2>
+<p>Nas primeiras semanas, as sessões e os temas serão preparados pela coordenação. À medida que o grupo se tornar mais entrosado, os participantes serão apoiados para preparar também as suas próprias atividades, de modo a ganharem autonomia e a capacidade de mobilizar o conhecimento por si mesmos.</p>
+
+<h2>Temas possíveis de trabalharmos</h2>
+<p>A lista abaixo é apenas uma proposta, para dar uma ideia do que é possível trabalhar. Ao longo das semanas deverão surgir novos temas, a partir das dúvidas e dificuldades dos participantes.</p>
+<div class="controles">
+  <button type="button" data-alvo="temas" data-acao="abrir">Abrir todas</button>
+  <button type="button" data-alvo="temas" data-acao="fechar">Fechar todas</button>
+</div>
+<div id="temas">
+
+<details>
+  <summary><span class="num">Fase 1</span>O que é um dado <span class="qtd">temas 1–8</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="1">
+    <li>Dado, informação e indicador: a diferença entre o registo individual, o número agregado e a medida com significado para a gestão.</li>
+    <li>De onde vêm os dados de saúde: livros de registo e fichas das unidades sanitárias, sistemas de informação de rotina (DHIS2), inquéritos populacionais (DHS, MICS), registo civil e estatísticas vitais, recenseamento populacional. Quem preenche, quando e com que finalidade.</li>
+    <li>Dados agregados e dados individuais: o DHIS2 recebe sobretudo números agregados (relatórios mensais), enquanto o livro de registo contém um caso por linha.</li>
+    <li>Unidade de observação e unidade de análise: pessoa, consulta, unidade sanitária, município, província, mês.</li>
+    <li>Variáveis e categorias: o que é uma variável e quais os valores que ela pode assumir.</li>
+    <li>Tipos de variáveis:
+      <ul>
+        <li>qualitativas nominais (sexo, tipo de unidade sanitária);</li>
+        <li>qualitativas ordinais (escolaridade, classificação de risco);</li>
+        <li>quantitativas discretas (número de consultas);</li>
+        <li>quantitativas contínuas (peso, pressão arterial).</li>
+      </ul>
+    </li>
+    <li>Variáveis de tempo e de lugar: datas, períodos de reporte, semanas epidemiológicas, hierarquia geográfica (unidade sanitária → município → província → país).</li>
+    <li>Dado em falta, "desconhecido" e zero: porque não são a mesma coisa (um relatório não enviado não equivale a zero casos).</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 2</span>Organizar dados numa folha de cálculo <span class="qtd">temas 9–15</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="9">
+    <li>Formato "uma linha por observação, uma coluna por variável" versus a folha "bonita" com células unidas.</li>
+    <li>Boas práticas no Excel: cabeçalho único, sem células unidas, sem cores como informação, sem totais misturados com os dados, datas no formato de data.</li>
+    <li>Dicionário de dados: o que significa cada coluna e que valores aceita. No DHIS2, isto corresponde às definições dos elementos de dados e dos indicadores.</li>
+    <li>Validação de dados no Excel: listas pendentes e regras de entrada para reduzir erros.</li>
+    <li>Limpeza básica: duplicados, grafias diferentes da mesma categoria (nomes de municípios ou unidades escritos de formas diferentes), espaços, valores impossíveis.</li>
+    <li>Separar dados brutos, cálculos e apresentação em folhas diferentes.</li>
+    <li>Exportar dados do DHIS2 para o Excel sem perder a estrutura.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 3</span>Resumir dados <span class="qtd">temas 16–21</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="16">
+    <li>Contagens e frequências: frequência absoluta, relativa (%) e acumulada.</li>
+    <li>Tabela de frequência simples e tabela de dupla entrada.</li>
+    <li>Tabelas dinâmicas no Excel e as tabelas dinâmicas do DHIS2 (Data Visualizer): a mesma lógica de agregação.</li>
+    <li>Medidas de tendência central: média, mediana e moda, e quando usar cada uma.</li>
+    <li>Medidas de dispersão: amplitude, desvio padrão, quartis e intervalo interquartil.</li>
+    <li>Arredondamento e casas decimais: quantas usar e porquê.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 4</span>Medidas de frequência em saúde <span class="qtd">temas 22–30</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="22">
+    <li>Número absoluto versus medida relativa: porque comparar números absolutos entre províncias ou municípios induz em erro.</li>
+    <li>Razão, proporção e taxa: definições e diferenças.</li>
+    <li>Numerador e denominador: de onde vem cada um. O problema do denominador populacional (projeções do recenseamento, estimativas das Nações Unidas, populações-alvo dos programas).</li>
+    <li>Prevalência e incidência.</li>
+    <li>Taxas e rácios de mortalidade (bruta, infantil, de menores de 5 anos, materna) e de morbilidade.</li>
+    <li>Indicadores de cobertura e de produção de serviços: cobertura vacinal, consultas pré-natais, partos institucionais, consultas por habitante.</li>
+    <li>Fatores de multiplicação (por 100, 1 000, 100 000 nascidos vivos ou habitantes) e quando usar cada um.</li>
+    <li>Comparar taxas entre populações com estruturas etárias diferentes: noção intuitiva de padronização.</li>
+    <li>Como os indicadores são construídos no DHIS2: elemento de dado, indicador, fórmula de numerador e denominador.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 5</span>Apresentar dados: tabelas <span class="qtd">temas 31–35</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="31">
+    <li>Formas de apresentação: texto, tabela, gráfico, mapa. Quando cada uma é a melhor escolha.</li>
+    <li>Elementos de uma tabela: número, título, cabeçalho das colunas, coluna de categorias, corpo, totais, fonte e notas.</li>
+    <li>Como escrever um bom título de tabela: o quê, onde e quando. Exemplos de títulos mal feitos e bem feitos.</li>
+    <li>Fonte e notas: indicar sempre a origem dos dados, a data de extração e as limitações.</li>
+    <li>Tabela para análise versus tabela para apresentação.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 6</span>Apresentar dados: gráficos <span class="qtd">temas 36–45</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="36">
+    <li>Elementos de um gráfico: título, eixos, rótulos dos eixos com unidade de medida, escala, legenda, rótulos de dados, fonte e notas.</li>
+    <li>Como escrever o título de um gráfico: título descritivo versus título que transmite a mensagem principal.</li>
+    <li>Que gráfico para que tipo de dado:
+      <ul>
+        <li>barras e colunas para categorias;</li>
+        <li>linhas para séries temporais;</li>
+        <li>histograma para a distribuição de uma variável contínua;</li>
+        <li>diagrama de caixa (box plot) para comparar distribuições;</li>
+        <li>diagrama de dispersão para a relação entre duas variáveis quantitativas;</li>
+        <li>gráfico circular (de sectores), e porque quase nunca usar.</li>
+      </ul>
+    </li>
+    <li>Diferença entre gráfico de colunas e histograma.</li>
+    <li>Erros comuns: eixo das barras que não começa em zero, efeitos 3D, excesso de cores, legendas desnecessárias, categorias sem ordem, gráficos circulares com muitas fatias, eixo duplo.</li>
+    <li>Ordenar categorias com critério (por valor ou pela ordem natural).</li>
+    <li>Uso da cor com propósito: destacar o que importa, atenção ao daltonismo.</li>
+    <li>Pirâmide etária.</li>
+    <li>Gráficos de vigilância: curva epidémica, limiar epidémico e canal endémico (noções).</li>
+    <li>Como não aceitar o gráfico padrão do Excel ou do DHIS2: o que corrigir sempre.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 7</span>Do dado à mensagem <span class="qtd">temas 46–50</span><span class="modulo">Módulo 1</span></summary>
+  <div class="conteudo"><ol start="46">
+    <li>Ler e interpretar uma tabela ou um gráfico: o que mostra e o que não mostra.</li>
+    <li>Escrever o parágrafo que acompanha a figura.</li>
+    <li>Painéis (dashboards) simples, incluindo os do DHIS2: poucos indicadores, bem escolhidos.</li>
+    <li>Boletim epidemiológico e nota informativa para a gestão: estrutura e público.</li>
+    <li>Revisão de dados em reuniões de equipa: usar os números para tomar decisões.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 8</span>Qualidade e crítica dos dados <span class="qtd">temas 51–55</span><span class="modulo">Módulo 2</span></summary>
+  <div class="conteudo"><ol start="51">
+    <li>Dimensões da qualidade: completude, pontualidade, consistência interna e externa.</li>
+    <li>Ferramentas de qualidade de dados: o módulo de qualidade de dados do DHIS2 e o <em>Data Quality Review toolkit</em> da OMS.</li>
+    <li>Subnotificação, mudanças nos formulários ou no sistema e "falsas tendências".</li>
+    <li>Comparar dados de rotina com dados de inquéritos (DHIS2 versus DHS/MICS): porque os números diferem.</li>
+    <li>Variação aleatória em números pequenos: porque a taxa de uma unidade sanitária pequena oscila tanto.</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 9</span>Introdução à inferência <span class="qtd">temas 56–59</span><span class="modulo">Módulo 2</span></summary>
+  <div class="conteudo"><ol start="56">
+    <li>População e amostra.</li>
+    <li>Noção de incerteza e de intervalo de confiança.</li>
+    <li>Associação não é causalidade: confundimento explicado com exemplos.</li>
+    <li>Testes de hipótese (noções básicas, sem fórmulas).</li>
+  </ol></div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 10</span>Além do Excel <span class="qtd">temas 60–63</span><span class="modulo">Módulo 2</span></summary>
+  <div class="conteudo"><ol start="60">
+    <li>Limites do Excel: reprodutibilidade, volume de dados, erros silenciosos.</li>
+    <li>Introdução às bases de dados e ao SQL: consultar em vez de copiar e colar.</li>
+    <li>Introdução ao R ou ao Python: importar, resumir e fazer gráficos com código.</li>
+    <li>Acesso a dados por API: DHIS2, Global Health Observatory da OMS, DHS.</li>
+  </ol></div>
+</details>
+
+</div>
+<p class="aviso">As fases 1 a 7 formam um primeiro módulo, pensado para quem trabalha sobretudo com Excel e DHIS2. As fases 8 a 10 constituem um segundo módulo.</p>
+
+<h2>Referências</h2>
+<div class="controles">
+  <button type="button" data-alvo="refs" data-acao="abrir">Abrir todas</button>
+  <button type="button" data-alvo="refs" data-acao="fechar">Fechar todas</button>
+</div>
+<div id="refs">
+
+<details>
+  <summary><span class="num">Base</span>Referências centrais <span class="qtd">servem a várias fases</span></summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>Bonita R, Beaglehole R, Kjellström T. <em>Basic Epidemiology</em>, 2.ª ed. OMS, 2006.</strong></p>
+      <p class="nota">Manual introdutório da OMS: medidas de frequência, tipos de estudo e noções de inferência. Versão inglesa: <a href="https://iris.who.int/handle/10665/43541" target="_blank" rel="noopener">iris.who.int/handle/10665/43541</a>. A edição em português (<em>Epidemiologia Básica</em>, Santos Editora, 2010) não é de acesso livre.</p></div>
+    <div class="ref"><p><strong>CDC. <em>Principles of Epidemiology in Public Health Practice</em>, 3.ª ed.</strong></p>
+      <p class="nota">Gratuito e em domínio público. Resumo de dados, medidas de risco, apresentação de dados, vigilância e investigação de surtos (fases 3 a 6). <a href="https://archive.cdc.gov/www_cdc_gov/csels/dsepd/ss1978/index.html" target="_blank" rel="noopener">Versão online</a> · <a href="https://stacks.cdc.gov/view/cdc/13178" target="_blank" rel="noopener">PDF</a></p></div>
+    <div class="ref"><p><strong>OPAS. <em>Módulos de Princípios de Epidemiologia para o Controle de Enfermidades</em> (MOPECE).</strong></p>
+      <p class="nota">Em português, com exercícios práticos, módulos sobre medidas em saúde pública, vigilância e investigação de surtos, e manual do facilitador. <a href="https://ses.sp.bvs.br/local/File/Modulos%20de%20Principios%20de%20Epidemiologia%20para%20o%20Controle%20de%20Enfermidades%20_MOPECE_.pdf" target="_blank" rel="noopener">PDF (OPAS, 2010)</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 1</span>O que é um dado e sistemas de informação</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>MEASURE Evaluation. <em>Routine Health Information Systems: A Curriculum on Basic Concepts and Practice</em>.</strong></p>
+      <p class="nota">Gratuito. Fontes de dados, fluxo da informação e uso de dados de rotina; inclui programa e guia do facilitador. <a href="https://www.measureevaluation.org/our-work/routine-health-information-systems/rhis-curriculum" target="_blank" rel="noopener">measureevaluation.org</a></p></div>
+    <div class="ref"><p><strong>OMS. <em>SCORE for Health Data Technical Package</em>, 2020.</strong></p>
+      <p class="nota">Enquadramento para o formador. <a href="https://www.who.int/data/data-collection-tools/score/faq/score-technical-package" target="_blank" rel="noopener">who.int</a></p></div>
+    <div class="ref"><p><strong>Documentação oficial do DHIS2 e cursos do DHIS2 Academy.</strong></p>
+      <p class="nota">Em especial os cursos de análise de dados agregados. <a href="https://docs.dhis2.org" target="_blank" rel="noopener">docs.dhis2.org</a> · <a href="https://academy.dhis2.org" target="_blank" rel="noopener">academy.dhis2.org</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 2</span>Organizar dados numa folha de cálculo</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>Broman KW, Woo KH. Data organization in spreadsheets. <em>The American Statistician</em>, 2018.</strong></p>
+      <p class="nota">Texto de referência para esta fase: curto, prático e escrito para quem usa Excel. <a href="https://doi.org/10.1080/00031305.2017.1375989" target="_blank" rel="noopener">doi.org/10.1080/00031305.2017.1375989</a></p></div>
+    <div class="ref"><p><strong>Wickham H. Tidy data. <em>Journal of Statistical Software</em>, 2014.</strong></p>
+      <p class="nota">Para o formador. <a href="https://doi.org/10.18637/jss.v059.i10" target="_blank" rel="noopener">doi.org/10.18637/jss.v059.i10</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 3</span>Resumir dados (estatística descritiva)</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>Kirkwood BR, Sterne JAC. <em>Essential Medical Statistics</em>, 2.ª ed. Wiley-Blackwell.</strong></p>
+      <p class="nota">Primeiros capítulos sobre tipos de variáveis e estatística descritiva. Livro comercial.</p></div>
+    <div class="ref"><p><strong>Diez D, Çetinkaya-Rundel M, Barr C. <em>OpenIntro Statistics</em>.</strong></p>
+      <p class="nota">Gratuito, com exercícios. <a href="https://www.openintro.org/book/os/" target="_blank" rel="noopener">openintro.org/book/os</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 4</span>Medidas de frequência e indicadores</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>OMS. <em>2018 Global Reference List of 100 Core Health Indicators (plus health-related SDGs)</em>.</strong></p>
+      <p class="nota">Numerador, denominador e fonte de cada indicador; modelo para ensinar a ler uma ficha de indicador. <a href="https://www.who.int/publications/i/item/2018-global-reference-list-of-100-core-health-indicators-(-plus-health-related-sdgs)" target="_blank" rel="noopener">who.int</a></p></div>
+    <div class="ref"><p><strong>Registo de metadados de indicadores do Global Health Observatory (OMS).</strong></p>
+      <p class="nota">Material para exercícios. <a href="https://www.who.int/data/gho/indicator-metadata-registry" target="_blank" rel="noopener">who.int/data/gho/indicator-metadata-registry</a></p></div>
+    <div class="ref"><p><strong>Porta M (ed.). <em>A Dictionary of Epidemiology</em>. Oxford University Press.</strong></p>
+      <p class="nota">Definições de taxa, razão, proporção, prevalência e incidência. Livro comercial.</p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fases 5–6</span>Tabelas e gráficos</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>OMS. <em>WHO Style Guide</em>, 2.ª ed., 2013.</strong></p>
+      <p class="nota">Capítulo sobre figuras, tabelas e caixas. <a href="https://unaids.org/sites/default/files/sg13_web_v4%20pdf%20-%20adobe%20reader.pdf" target="_blank" rel="noopener">PDF (cópia alojada pela ONUSIDA)</a></p></div>
+    <div class="ref"><p><strong>Knaflic CN. <em>Storytelling with Data</em>.</strong></p>
+      <p class="nota">Tem tradução em português; exemplos feitos em Excel. <a href="https://www.storytellingwithdata.com/books" target="_blank" rel="noopener">storytellingwithdata.com/books</a></p></div>
+    <div class="ref"><p><strong>Few S. <em>Show Me the Numbers</em>.</strong></p>
+      <p class="nota">Escolha entre tabela e gráfico e desenho de ambos. <a href="https://www.perceptualedge.com" target="_blank" rel="noopener">perceptualedge.com</a></p></div>
+    <div class="ref"><p><strong>Wilke CO. <em>Fundamentals of Data Visualization</em>.</strong></p>
+      <p class="nota">Gratuito online, com exemplos de erros comuns. <a href="https://clauswilke.com/dataviz/" target="_blank" rel="noopener">clauswilke.com/dataviz</a></p></div>
+    <div class="ref"><p><strong>Tufte ER. <em>The Visual Display of Quantitative Information</em>.</strong></p>
+      <p class="nota">Para o formador; obra clássica. <a href="https://www.edwardtufte.com" target="_blank" rel="noopener">edwardtufte.com</a></p></div>
+    <div class="ref"><p><strong>Exemplos reais, bons e maus, para analisar nos encontros:</strong></p>
+      <ul>
+        <li><em>World Health Statistics</em> (OMS, anual): <a href="https://www.who.int/data/gho/publications/world-health-statistics" target="_blank" rel="noopener">who.int</a></li>
+        <li>Relatórios DHS: <a href="https://dhsprogram.com" target="_blank" rel="noopener">dhsprogram.com</a></li>
+        <li>Relatórios MICS: <a href="https://mics.unicef.org" target="_blank" rel="noopener">mics.unicef.org</a></li>
+      </ul></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 7</span>Do dado à mensagem</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>OMS. <em>Analysis and use of health facility data</em>.</strong></p>
+      <p class="nota">Série de guias por área programática. Sugere-se a versão de 2023 sobre saúde materna, neonatal, infantil e do adolescente, com catálogo de indicadores, orientações de análise e interpretação, exercícios e guia do facilitador. <a href="https://www.who.int/publications/i/item/9789240080331" target="_blank" rel="noopener">who.int</a></p></div>
+    <div class="ref"><p><strong>MEASURE Evaluation / Data for Impact.</strong></p>
+      <p class="nota">Material sobre reuniões de revisão de dados e tomada de decisão. <a href="https://www.data4impactproject.org" target="_blank" rel="noopener">data4impactproject.org</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 8</span>Qualidade dos dados</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>OMS. <em>Data Quality Review / Data Quality Assurance toolkit</em>.</strong></p>
+      <p class="nota">Três módulos (enquadramento e métricas, análise documental, avaliação nas unidades sanitárias); aplicação para o DHIS2, ferramentas em Excel e materiais de formação. <a href="https://www.who.int/data/data-collection-tools/health-service-data/data-quality-assurance-dqa" target="_blank" rel="noopener">who.int</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Transversal</span>Vigilância <span class="qtd">fases 4, 6 e 8</span></summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>OMS AFRO. <em>Orientações técnicas para a vigilância e resposta integrada às doenças na Região Africana</em>, 3.ª ed.</strong></p>
+      <p class="nota">Em português. Curvas epidémicas, limiares e análise por tempo, lugar e pessoa. <a href="https://www.afro.who.int/pt/publications/orientacoes-tecnicas-para-avigilancia-e-resposta-integrada-doencas-na-regiao-africana" target="_blank" rel="noopener">afro.who.int</a>. Pacote de formação online na OpenWHO (inglês, francês e português): <a href="https://openwho.org/channels/idsr" target="_blank" rel="noopener">openwho.org/channels/idsr</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 9</span>Introdução à inferência</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong>Kirkwood &amp; Sterne</strong></p>
+      <p class="nota">Capítulos sobre intervalos de confiança e testes.</p></div>
+    <div class="ref"><p><strong>Bonita et al., <em>Epidemiologia Básica</em></strong></p>
+      <p class="nota">Capítulos sobre causalidade e confundimento.</p></div>
+    <div class="ref"><p><strong>Hernán MA, Robins JM. <em>Causal Inference: What If</em>.</strong></p>
+      <p class="nota">Para o formador, como aprofundamento. <a href="https://miguelhernan.org/whatifbook" target="_blank" rel="noopener">miguelhernan.org/whatifbook</a></p></div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="num">Fase 10</span>Além do Excel</summary>
+  <div class="conteudo">
+    <div class="ref"><p><strong><em>The Epidemiologist R Handbook</em> (Applied Epi).</strong></p>
+      <p class="nota">Gratuito, com versão em português. <a href="https://epirhandbook.com/pt/" target="_blank" rel="noopener">epirhandbook.com/pt</a></p></div>
+    <div class="ref"><p><strong>Wickham H et al. <em>R for Data Science</em>, 2.ª ed.</strong></p>
+      <p class="nota">Gratuito online. <a href="https://r4ds.hadley.nz" target="_blank" rel="noopener">r4ds.hadley.nz</a></p></div>
+    <div class="ref"><p><strong>Documentação das API, para os exercícios de acesso a dados:</strong></p>
+      <ul>
+        <li>DHIS2: <a href="https://docs.dhis2.org" target="_blank" rel="noopener">docs.dhis2.org</a></li>
+        <li>Global Health Observatory: <a href="https://www.who.int/data/gho/info/gho-odata-api" target="_blank" rel="noopener">who.int/data/gho/info/gho-odata-api</a></li>
+        <li>DHS: <a href="https://api.dhsprogram.com" target="_blank" rel="noopener">api.dhsprogram.com</a></li>
+      </ul></div>
+  </div>
+</details>
+
+</div>
+</main>
+
+<footer>
+  Café com Dados · Organização Mundial da Saúde, Escritório de Angola · Quartas-feiras, 9h00–9h45
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.controles button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var abrir = b.dataset.acao === 'abrir';
+      document.querySelectorAll('#' + b.dataset.alvo + ' details').forEach(function(d){ d.open = abrir; });
+    });
+  });
+  // Ao imprimir, abre todas as sanfonas
+  var estado = [];
+  window.addEventListener('beforeprint', function(){
+    estado = [];
+    document.querySelectorAll('details').forEach(function(d){ estado.push(d.open); d.open = true; });
+  });
+  window.addEventListener('afterprint', function(){
+    document.querySelectorAll('details').forEach(function(d,i){ d.open = estado[i]; });
+  });
+</script>
+</body>
+</html>
