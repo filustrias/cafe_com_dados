@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Café com Dados · Memória</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#0a5c8a;
+    --azul-escuro:#084a70;
+    --azul-claro:#e8f2f8;
+    --cafe:#6b4a32;
+    --cafe-claro:#f5efe9;
+    --verde:#2f7a5b;
+    --verde-claro:#e9f4ef;
+    --texto:#1f2a33;
+    --cinza:#5b6872;
+    --linha:#d9e1e6;
+    --fundo:#ffffff;
+    --pagina:#f4f6f8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--pagina);color:var(--texto);
+    font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.6;
+  }
+  .folha{max-width:920px;margin:32px auto;background:var(--fundo);
+    border:1px solid var(--linha);border-radius:8px;overflow:hidden}
+  header{background:var(--cafe);color:#fff;padding:36px 48px 30px}
+  header .rotulo{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0 0 8px}
+  header .rotulo a{color:#fff}
+  header h1{font-family:"Source Serif 4",Georgia,serif;font-size:40px;line-height:1.1;margin:0 0 12px}
+  header p.sub{margin:0;font-size:18px;max-width:660px;opacity:.95}
+  main{padding:12px 48px 40px}
+  h2{font-family:"Source Serif 4",Georgia,serif;color:var(--cafe);font-size:23px;
+    margin:32px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--cafe-claro)}
+  p{margin:0 0 12px}
+  a{color:var(--azul);word-break:break-word}
+
+  .uso{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .uso div{border:1px solid var(--linha);border-top:4px solid var(--cafe);border-radius:8px;padding:14px 16px;font-size:15px}
+  .uso strong{display:block;color:var(--cafe);margin-bottom:2px}
+
+  /* Filtro */
+  .filtro{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+  .filtro input{font:inherit;flex:1 1 240px;border:1px solid var(--linha);border-radius:6px;padding:7px 12px}
+  .filtro .contagem{font-size:14px;color:var(--cinza)}
+
+  /* Sessões */
+  details.sessao{border:1px solid var(--linha);border-radius:8px;margin-bottom:10px;background:#fff}
+  details.sessao[open]{border-color:#c9b6a6}
+  summary{cursor:pointer;list-style:none;padding:12px 16px;display:flex;align-items:baseline;gap:12px;font-weight:600;flex-wrap:wrap}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";margin-left:auto;color:var(--cafe);font-weight:700;font-size:18px;line-height:1}
+  details[open] summary::after{content:"−"}
+  summary .num{font-size:12px;font-weight:700;color:#fff;background:var(--cafe);border-radius:3px;padding:2px 8px}
+  summary .data{font-weight:400;font-size:14px;color:var(--cinza)}
+  summary .fase{font-size:12px;font-weight:600;color:var(--azul);background:var(--azul-claro);border-radius:3px;padding:2px 7px}
+  summary .modelo{font-size:12px;font-weight:600;color:var(--verde);background:var(--verde-claro);border-radius:3px;padding:2px 7px}
+  .ficha{border-top:1px solid var(--linha);padding:4px 20px 18px;display:grid;grid-template-columns:200px 1fr;gap:0 20px}
+  .ficha dt{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--cinza);font-weight:700;padding-top:14px}
+  .ficha dd{margin:0;padding-top:12px;border-bottom:1px solid #eef2f4;padding-bottom:12px}
+  .ficha dd:last-of-type{border-bottom:none}
+  .ficha ul{margin:0;padding-left:18px}
+  .ficha .vazio{color:var(--cinza);font-style:italic}
+
+  .nota{background:var(--azul-claro);border-left:4px solid var(--azul);padding:14px 18px;border-radius:0 8px 8px 0;font-size:15px}
+  .nota ol{margin:6px 0 0;padding-left:20px}
+  code{background:#eef2f4;border-radius:3px;padding:0 4px;font-size:14px}
+
+  footer{border-top:1px solid var(--linha);padding:18px 48px 24px;font-size:14px;color:var(--cinza)}
+
+  @media (max-width:640px){
+    .folha{margin:0;border:none;border-radius:0}
+    header{padding:26px 16px 22px}
+    header h1{font-size:32px}
+    main{padding:4px 16px 28px}
+    footer{padding:14px 16px 20px}
+    .uso{grid-template-columns:1fr}
+    .ficha{grid-template-columns:1fr;padding:4px 16px 14px}
+    .ficha dt{padding-top:12px}
+    .ficha dd{padding-top:2px}
+  }
+  @media print{
+    body{background:#fff}
+    .folha{margin:0;border:none}
+    .filtro{display:none}
+    header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    details{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="folha">
+
+<header>
+  <p class="rotulo"><a href="cafe-com-dados.html">Café com Dados</a> · Memória</p>
+  <h1>Memória das sessões</h1>
+  <p class="sub">Arquivo de cada encontro: o que foi produzido, temas, slides, conceitos e materiais, para reutilizar no trabalho com as direções de saúde.</p>
+</header>
+
+<main>
+
+<h2>Para que serve</h2>
+<div class="uso">
+  <div><strong>Participantes</strong>Rever um tema ou recuperar uma sessão em que não puderam estar.</div>
+  <div><strong>Pontos focais</strong>Reutilizar slides, exercícios e exemplos com os profissionais das direções provinciais de saúde.</div>
+  <div><strong>Coordenação</strong>Acompanhar o percurso do grupo e planear os temas seguintes.</div>
+</div>
+
+<h2>Sessões</h2>
+<div class="filtro">
+  <input type="search" id="busca" placeholder="Procurar por tema, conceito ou fase…" aria-label="Procurar sessões">
+  <span class="contagem" id="contagem"></span>
+</div>
+
+<div id="sessoes">
+
+<!--
+  COMO ACRESCENTAR UMA SESSÃO
+  1. Copie o bloco <details class="sessao"> … </details> da sessão modelo.
+  2. Cole-o no topo desta lista (a sessão mais recente fica em primeiro lugar).
+  3. Preencha os campos e retire a etiqueta "modelo".
+  4. Guarde os ficheiros (slides, dados, exercícios) em materiais/sessao-NN/ e ligue-os aqui.
+-->
+
+<details class="sessao">
+  <summary><span class="num">Sessão 00</span>Título do tema <span class="data">dd/mm/aaaa</span><span class="fase">Fase 1 · tema 1</span><span class="modelo">modelo</span></summary>
+  <dl class="ficha">
+    <dt>Tema</dt>
+    <dd>Título e número do tema na lista da proposta.</dd>
+    <dt>Quem preparou</dt>
+    <dd>Nome de quem preparou e conduziu a sessão.</dd>
+    <dt>Conceitos-chave</dt>
+    <dd><ul><li>Conceito 1, explicado numa frase.</li><li>Conceito 2, explicado numa frase.</li></ul></dd>
+    <dt>Slides</dt>
+    <dd><span class="vazio">Ligação para materiais/sessao-00/slides.pdf</span></dd>
+    <dt>Exercício</dt>
+    <dd>Enunciado do exercício. <span class="vazio">Ligação para os ficheiros de dados usados.</span></dd>
+    <dt>O que foi produzido</dt>
+    <dd>Tabelas, gráficos ou textos feitos pelos grupos, e as principais conclusões da discussão.</dd>
+    <dt>Dúvidas levantadas</dt>
+    <dd>Perguntas que surgiram e que podem dar origem a novos temas.</dd>
+    <dt>Para levar às direções de saúde</dt>
+    <dd>Sugestões de como os pontos focais podem usar este tema no contacto com os profissionais das direções provinciais.</dd>
+    <dt>Referências</dt>
+    <dd>Leituras recomendadas para aprofundar.</dd>
+    <dt>Próxima sessão</dt>
+    <dd>Tema e preparação pedida aos participantes.</dd>
+  </dl>
+</details>
+
+</div>
+
+<h2>Onde ficam os materiais</h2>
+<div class="nota">
+  Os ficheiros de cada sessão ficam guardados neste mesmo site, numa pasta por encontro:
+  <ol>
+    <li><code>materiais/sessao-01/</code>, <code>materiais/sessao-02/</code>, …</li>
+    <li>Dentro de cada pasta: slides (de preferência em PDF), ficheiros de dados e exercícios, e os produtos dos grupos.</li>
+  </ol>
+</div>
+
+</main>
+
+<footer>
+  <a href="cafe-com-dados.html">← Voltar à proposta do Café com Dados</a> · OMS, Escritório de Angola
+</footer>
+
+</div>
+
+<script>
+  var busca = document.getElementById('busca');
+  var sessoes = document.querySelectorAll('#sessoes details.sessao');
+  function filtrar(){
+    var q = busca.value.trim().toLowerCase(), n = 0;
+    sessoes.forEach(function(s){
+      var ok = !q || s.textContent.toLowerCase().indexOf(q) !== -1;
+      s.style.display = ok ? '' : 'none';
+      if (ok) n++;
+    });
+    document.getElementById('contagem').textContent = n + (n === 1 ? ' sessão' : ' sessões');
+  }
+  busca.addEventListener('input', filtrar);
+  filtrar();
+  window.addEventListener('beforeprint', function(){ sessoes.forEach(function(s){ s.open = true; }); });
+</script>
+</body>
+</html>

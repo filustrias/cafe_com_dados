@@ -9,9 +9,12 @@
 <style>
   :root{
     --azul:#0a5c8a;
+    --azul-escuro:#084a70;
     --azul-claro:#e8f2f8;
     --cafe:#6b4a32;
     --cafe-claro:#f5efe9;
+    --verde:#2f7a5b;
+    --verde-claro:#e9f4ef;
     --texto:#1f2a33;
     --cinza:#5b6872;
     --linha:#d9e1e6;
@@ -19,59 +22,94 @@
     --pagina:#f4f6f8;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{
     margin:0;background:var(--pagina);color:var(--texto);
     font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
-    font-size:16px;line-height:1.55;
+    font-size:16px;line-height:1.6;
   }
-  .folha{max-width:860px;margin:32px auto;background:var(--fundo);
-    border:1px solid var(--linha);border-radius:6px;overflow:hidden}
-  header{background:var(--azul);color:#fff;padding:36px 40px 30px}
-  header .rotulo{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0 0 6px}
-  header h1{font-family:"Source Serif 4",Georgia,serif;font-size:40px;line-height:1.1;margin:0 0 10px}
-  header p.sub{margin:0;font-size:18px;max-width:620px;opacity:.95}
-  main{padding:28px 40px 36px}
-  h2{font-family:"Source Serif 4",Georgia,serif;color:var(--azul);font-size:22px;
-    margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--azul-claro)}
-  h2:first-child{margin-top:4px}
+  .folha{max-width:920px;margin:32px auto;background:var(--fundo);
+    border:1px solid var(--linha);border-radius:8px;overflow:hidden}
+
+  header{background:var(--azul);color:#fff;padding:40px 48px 34px}
+  header .rotulo{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0 0 8px}
+  header h1{font-family:"Source Serif 4",Georgia,serif;font-size:44px;line-height:1.1;margin:0 0 12px}
+  header p.sub{margin:0;font-size:19px;max-width:640px;opacity:.95}
+
+  /* Navegação */
+  nav.indice{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--linha);
+    padding:10px 48px;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px}
+  nav.indice a{color:var(--cinza);text-decoration:none;font-weight:600;white-space:nowrap}
+  nav.indice a:hover{color:var(--azul)}
+
+  main{padding:8px 48px 40px}
+  section{padding-top:8px;scroll-margin-top:48px}
+  h2{font-family:"Source Serif 4",Georgia,serif;color:var(--azul);font-size:24px;
+    margin:36px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--azul-claro);
+    display:flex;align-items:baseline;gap:12px}
+  h2 .n{font-family:"Source Sans 3",sans-serif;font-size:13px;font-weight:700;color:var(--azul);
+    background:var(--azul-claro);border-radius:4px;padding:1px 8px;position:relative;top:-3px}
+  p{margin:0 0 12px}
+  .intro{color:var(--cinza);max-width:720px}
 
   /* Informações práticas */
   .info{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .cartao{border:1px solid var(--linha);border-radius:6px;padding:14px 16px;background:#fff}
+  .cartao{border:1px solid var(--linha);border-radius:8px;padding:16px 18px;background:#fff;border-top:4px solid var(--azul)}
   .cartao .t{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--cinza);margin:0 0 4px;font-weight:600}
-  .cartao .v{font-size:18px;font-weight:700;margin:0;color:var(--texto)}
-  .cartao .d{font-size:14px;color:var(--cinza);margin:4px 0 0}
+  .cartao .v{font-size:19px;font-weight:700;margin:0;color:var(--texto);line-height:1.3}
+  .cartao .d{font-size:14px;color:var(--cinza);margin:6px 0 0}
 
-  .objetivo{background:var(--azul-claro);border-left:4px solid var(--azul);padding:16px 20px;border-radius:0 6px 6px 0}
+  .objetivo{background:var(--azul-claro);border-left:4px solid var(--azul);padding:18px 22px;border-radius:0 8px 8px 0}
   .objetivo p{margin:0 0 8px}
   .objetivo p:last-child{margin:0}
 
-  /* Formato */
-  .barra{display:grid;grid-template-columns:1fr 1fr 1fr;border-radius:6px;overflow:hidden;border:1px solid var(--linha)}
-  .bloco{padding:14px 16px;border-right:1px solid var(--linha)}
-  .bloco:last-child{border-right:none}
-  .bloco .hora{font-size:13px;font-weight:700;color:var(--cinza);margin:0}
-  .bloco .nome{font-size:17px;font-weight:700;margin:2px 0 6px}
-  .bloco .desc{font-size:14px;margin:0;color:var(--texto)}
-  .bloco .expl{font-size:14px;margin:10px 0 0;padding-top:10px;border-top:1px solid rgba(0,0,0,.12);color:var(--cinza)}
-  .b1{background:var(--azul-claro)} .b1 .nome{color:var(--azul)}
-  .b2{background:#fff}             .b2 .nome{color:var(--azul)}
-  .b3{background:var(--cafe-claro)} .b3 .nome{color:var(--cafe)}
-  .escala{display:flex;justify-content:space-between;font-size:12px;color:var(--cinza);margin-top:4px;padding:0 2px}
+  /* Formato de cada encontro */
+  .linha-tempo{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:10px}
+  .linha-tempo div{height:8px;border-radius:4px}
+  .lt1{background:var(--azul)} .lt2{background:var(--verde)} .lt3{background:var(--cafe)}
+  .etapas{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .etapa{border:1px solid var(--linha);border-radius:8px;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+  .etapa .topo{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:13px;font-weight:700}
+  .etapa .dur{font-weight:600;font-size:12px;border-radius:10px;padding:1px 9px;background:#fff}
+  .etapa .corpo{padding:14px 16px 4px}
+  .etapa .nome{font-family:"Source Serif 4",Georgia,serif;font-size:20px;font-weight:700;margin:0 0 4px}
+  .etapa .desc{font-size:15px;font-weight:600;margin:0 0 10px}
+  .etapa .expl{font-size:14px;color:var(--cinza);margin:0;padding:12px 16px 16px;border-top:1px dashed var(--linha);margin-top:auto}
+  .e1 .topo{background:var(--azul-claro);color:var(--azul)}   .e1 .nome{color:var(--azul)}   .e1 .dur{color:var(--azul)}
+  .e2 .topo{background:var(--verde-claro);color:var(--verde)} .e2 .nome{color:var(--verde)} .e2 .dur{color:var(--verde)}
+  .e3 .topo{background:var(--cafe-claro);color:var(--cafe)}   .e3 .nome{color:var(--cafe)}   .e3 .dur{color:var(--cafe)}
+
+  /* Listas com marcadores */
+  ul.pontos{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  ul.pontos li{position:relative;padding:12px 16px 12px 44px;border:1px solid var(--linha);border-radius:8px;background:#fff}
+  ul.pontos li::before{content:"";position:absolute;left:18px;top:20px;width:10px;height:10px;border-radius:50%;background:var(--azul)}
+  ul.pontos li strong{color:var(--azul-escuro)}
+
+  /* Memória */
+  .memoria{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:start}
+  .ficha{border:1px solid var(--linha);border-radius:8px;overflow:hidden;background:#fff;font-size:14px}
+  .ficha .cab{background:var(--cafe);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;gap:10px}
+  .ficha .cab strong{font-size:15px}
+  .ficha dl{margin:0;padding:6px 16px 12px}
+  .ficha dt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--cinza);font-weight:700;margin-top:10px}
+  .ficha dd{margin:2px 0 0}
+  .botao{display:inline-block;margin-top:14px;background:var(--azul);color:#fff;text-decoration:none;
+    font-weight:600;padding:9px 16px;border-radius:6px}
+  .botao:hover{background:var(--azul-escuro)}
 
   /* Sanfonas */
-  .controles{display:flex;justify-content:flex-end;gap:8px;margin:-4px 0 10px}
+  .controles{display:flex;justify-content:flex-end;gap:8px;margin:0 0 10px}
   .controles button{font:inherit;font-size:13px;background:none;border:1px solid var(--linha);
     border-radius:4px;padding:4px 10px;color:var(--azul);cursor:pointer}
   .controles button:hover{background:var(--azul-claro)}
-  details{border:1px solid var(--linha);border-radius:6px;margin-bottom:8px;background:#fff}
+  details{border:1px solid var(--linha);border-radius:8px;margin-bottom:8px;background:#fff}
   details[open]{border-color:#b9cad5}
   summary{cursor:pointer;list-style:none;padding:12px 16px;display:flex;align-items:baseline;gap:12px;font-weight:600}
   summary::-webkit-details-marker{display:none}
   summary::after{content:"+";margin-left:auto;color:var(--azul);font-weight:700;font-size:18px;line-height:1}
   details[open] summary::after{content:"−"}
   summary .num{flex:0 0 auto;font-size:12px;font-weight:700;color:#fff;background:var(--azul);
-    border-radius:3px;padding:2px 7px;letter-spacing:.03em}
+    border-radius:3px;padding:2px 7px;letter-spacing:.03em;min-width:62px;text-align:center}
   summary .qtd{font-weight:400;font-size:13px;color:var(--cinza);white-space:nowrap}
   .conteudo{padding:2px 20px 14px 20px;border-top:1px solid var(--linha)}
   .conteudo ol{margin:12px 0 0;padding-left:28px}
@@ -84,30 +122,34 @@
   a{color:var(--azul);word-break:break-word}
   .modulo{font-size:12px;font-weight:600;color:var(--cafe);background:var(--cafe-claro);
     border-radius:3px;padding:2px 7px;white-space:nowrap}
-  .aviso{font-size:15px;color:var(--cinza);margin:10px 0 0}
+  .aviso{font-size:15px;color:var(--cinza);margin:12px 0 0}
 
-  footer{border-top:1px solid var(--linha);padding:16px 40px 22px;font-size:14px;color:var(--cinza)}
+  footer{border-top:1px solid var(--linha);padding:18px 48px 24px;font-size:14px;color:var(--cinza)}
 
+  @media (max-width:760px){
+    .memoria{grid-template-columns:1fr}
+  }
   @media (max-width:640px){
     .folha{margin:0;border:none;border-radius:0}
     header{padding:26px 16px 22px}
-    header h1{font-size:32px}
-    main{padding:20px 16px 28px}
+    header h1{font-size:34px}
+    header p.sub{font-size:17px}
+    nav.indice{padding:8px 16px;flex-wrap:nowrap;overflow-x:auto}
+    main{padding:4px 16px 28px}
     footer{padding:14px 16px 20px}
+    h2{font-size:21px}
     .info{grid-template-columns:1fr}
-    .barra{grid-template-columns:1fr}
-    .bloco{border-right:none;border-bottom:1px solid var(--linha)}
-    .bloco:last-child{border-bottom:none}
-    .escala{display:none}
+    .linha-tempo{display:none}
+    .etapas{grid-template-columns:1fr}
     summary{flex-wrap:wrap}
     summary .modulo{order:3}
   }
   @media print{
     body{background:#fff}
     .folha{margin:0;border:none}
-    .controles{display:none}
-    header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    details{break-inside:avoid}
+    nav.indice,.controles,.botao{display:none}
+    header,.linha-tempo div,.etapa .topo,.ficha .cab{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    details,.etapa,.ficha{break-inside:avoid}
   }
 </style>
 </head>
@@ -120,9 +162,20 @@
   <p class="sub">Encontro semanal para aprimorarmos as nossas competências para produzir, ler, analisar, julgar e comunicar dados de saúde pública.</p>
 </header>
 
+<nav class="indice" aria-label="Secções">
+  <a href="#info">Informações</a>
+  <a href="#objetivo">Objetivo</a>
+  <a href="#formato">Formato</a>
+  <a href="#preparacao">Preparação</a>
+  <a href="#memoria">Memória</a>
+  <a href="#temas">Temas</a>
+  <a href="#referencias">Referências</a>
+</nav>
+
 <main>
 
-<h2>Informações práticas</h2>
+<section id="info">
+<h2><span class="n">1</span>Informações práticas</h2>
 <div class="info">
   <div class="cartao">
     <p class="t">Quando</p>
@@ -140,46 +193,92 @@
     <p class="d">Em contacto diário com as direções provinciais de saúde</p>
   </div>
 </div>
+</section>
 
-<h2>Objetivo</h2>
+<section id="objetivo">
+<h2><span class="n">2</span>Objetivo</h2>
 <div class="objetivo">
   <p>Ampliar e aprofundar o conhecimento dos profissionais da OMS sobre como produzir, ler, analisar, julgar e comunicar dados de saúde pública.</p>
   <p>Espera-se que este aprendizado chegue às direções provinciais de saúde através do contacto diário dos pontos focais.</p>
 </div>
+</section>
 
-<h2>Formato de cada encontro</h2>
-<div class="barra">
-  <div class="bloco b1">
-    <p class="hora">9h00 – 9h15</p>
-    <p class="nome">Apresentação</p>
-    <p class="desc">Exposição breve do tema da semana.</p>
+<section id="formato">
+<h2><span class="n">3</span>Formato de cada encontro</h2>
+<p class="intro">45 minutos, divididos em três partes iguais.</p>
+<div class="linha-tempo" aria-hidden="true"><div class="lt1"></div><div class="lt2"></div><div class="lt3"></div></div>
+<div class="etapas">
+  <div class="etapa e1">
+    <div class="topo"><span>9h00 – 9h15</span><span class="dur">15 min</span></div>
+    <div class="corpo">
+      <p class="nome">Apresentação</p>
+      <p class="desc">Exposição breve do tema da semana.</p>
+    </div>
     <p class="expl">Apenas 15 minutos para apresentar um tema ou conceito. Não haverá palestras nem aulas magnas.</p>
   </div>
-  <div class="bloco b2">
-    <p class="hora">9h15 – 9h30</p>
-    <p class="nome">Exercício</p>
-    <p class="desc">Trabalho prático sobre o tema em pequenos grupos.</p>
+  <div class="etapa e2">
+    <div class="topo"><span>9h15 – 9h30</span><span class="dur">15 min</span></div>
+    <div class="corpo">
+      <p class="nome">Exercício</p>
+      <p class="desc">Trabalho prático sobre o tema em pequenos grupos.</p>
+    </div>
     <p class="expl">Só se aprende pondo as mãos na massa. Os exercícios serão focados num tema muito específico e feitos sempre em pequenos grupos.</p>
   </div>
-  <div class="bloco b3">
-    <p class="hora">9h30 – 9h45</p>
-    <p class="nome">Fecho</p>
-    <p class="desc">Conclusões e informações para o encontro seguinte.</p>
+  <div class="etapa e3">
+    <div class="topo"><span>9h30 – 9h45</span><span class="dur">15 min</span></div>
+    <div class="corpo">
+      <p class="nome">Fecho</p>
+      <p class="desc">Conclusões e informações para o encontro seguinte.</p>
+    </div>
     <p class="expl">Discussão do trabalho feito nos pequenos grupos e apresentação do que será feito no encontro seguinte.</p>
   </div>
 </div>
-<div class="escala"><span>0 min</span><span>15 min</span><span>30 min</span><span>45 min</span></div>
+</section>
 
-<h2>Preparação das sessões</h2>
-<p>Nas primeiras semanas, as sessões e os temas serão preparados pela coordenação. À medida que o grupo se tornar mais entrosado, os participantes serão apoiados para preparar também as suas próprias atividades, de modo a ganharem autonomia e a capacidade de mobilizar o conhecimento por si mesmos.</p>
+<section id="preparacao">
+<h2><span class="n">4</span>Preparação das sessões</h2>
+<ul class="pontos">
+  <li><strong>Primeiras semanas:</strong> as sessões e os temas são preparados pela coordenação.</li>
+  <li><strong>À medida que o grupo se entrosa:</strong> os participantes passam a ser apoiados para preparar as suas próprias atividades.</li>
+  <li><strong>Objetivo final:</strong> que os participantes ganhem autonomia e a capacidade de mobilizar o conhecimento por si mesmos.</li>
+  <li><strong>Registo:</strong> quem prepara a sessão deixa os materiais prontos para serem guardados na memória do Café com Dados (ver secção seguinte).</li>
+</ul>
+</section>
 
-<h2>Temas possíveis de trabalharmos</h2>
+<section id="memoria">
+<h2><span class="n">5</span>Memória das sessões</h2>
+<div class="memoria">
+  <div>
+    <p>Cada encontro fica registado numa página web comum do Café com Dados, com um arquivo por sessão. O objetivo é que nada do que for produzido se perca e que o material possa ser reutilizado mais tarde.</p>
+    <ul class="pontos">
+      <li><strong>Para os participantes:</strong> rever um tema, recuperar uma sessão em que não puderam estar.</li>
+      <li><strong>Para os pontos focais:</strong> reutilizar slides, exercícios e exemplos nas atividades com os profissionais das direções provinciais de saúde.</li>
+      <li><strong>Para a coordenação:</strong> acompanhar o percurso do grupo e planear os temas seguintes.</li>
+    </ul>
+    <a class="botao" href="memoria.html">Abrir a memória das sessões →</a>
+  </div>
+  <div class="ficha" aria-label="Exemplo de ficha de sessão">
+    <div class="cab"><strong>Sessão n.º · Tema</strong><span>data</span></div>
+    <dl>
+      <dt>Tema e fase</dt><dd>Tema da lista abaixo e fase a que pertence</dd>
+      <dt>Conceitos-chave</dt><dd>As ideias principais, em poucas linhas</dd>
+      <dt>Slides</dt><dd>Apresentação usada nos primeiros 15 minutos</dd>
+      <dt>Exercício</dt><dd>Enunciado e ficheiros de dados usados</dd>
+      <dt>O que foi produzido</dt><dd>Tabelas, gráficos e conclusões dos grupos</dd>
+      <dt>Para levar às direções de saúde</dt><dd>Sugestões de como usar o tema no terreno</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<section id="temas">
+<h2><span class="n">6</span>Temas possíveis de trabalharmos</h2>
 <p>A lista abaixo é apenas uma proposta, para dar uma ideia do que é possível trabalhar. Ao longo das semanas deverão surgir novos temas, a partir das dúvidas e dificuldades dos participantes.</p>
 <div class="controles">
-  <button type="button" data-alvo="temas" data-acao="abrir">Abrir todas</button>
-  <button type="button" data-alvo="temas" data-acao="fechar">Fechar todas</button>
+  <button type="button" data-alvo="lista-temas" data-acao="abrir">Abrir todas</button>
+  <button type="button" data-alvo="lista-temas" data-acao="fechar">Fechar todas</button>
 </div>
-<div id="temas">
+<div id="lista-temas">
 
 <details>
   <summary><span class="num">Fase 1</span>O que é um dado <span class="qtd">temas 1–8</span><span class="modulo">Módulo 1</span></summary>
@@ -322,8 +421,10 @@
 
 </div>
 <p class="aviso">As fases 1 a 7 formam um primeiro módulo, pensado para quem trabalha sobretudo com Excel e DHIS2. As fases 8 a 10 constituem um segundo módulo.</p>
+</section>
 
-<h2>Referências</h2>
+<section id="referencias">
+<h2><span class="n">7</span>Referências</h2>
 <div class="controles">
   <button type="button" data-alvo="refs" data-acao="abrir">Abrir todas</button>
   <button type="button" data-alvo="refs" data-acao="fechar">Fechar todas</button>
@@ -463,10 +564,11 @@
 </details>
 
 </div>
+</section>
 </main>
 
 <footer>
-  Café com Dados · Organização Mundial da Saúde, Escritório de Angola · Quartas-feiras, 9h00–9h45
+  Café com Dados · Organização Mundial da Saúde, Escritório de Angola · Quartas-feiras, 9h00–9h45 · <a href="memoria.html">Memória das sessões</a>
 </footer>
 
 </div>
